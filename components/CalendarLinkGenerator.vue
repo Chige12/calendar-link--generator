@@ -26,12 +26,12 @@
         <div class="flex items-end mb-12">
           <div>
             <p class="mb-2">開始時間</p>
-            <a-time-picker :default-value="moment('12:00', 'HH:mm')" format="HH:mm" @change="startTimeChange" />
+            <a-time-picker :default-value="moment(startTime, 'HH:mm')" format="HH:mm" @change="startTimeChange" />
           </div>
           <span class="mx-2 py-1.5">〜</span>
           <div>
             <p class="mb-2">終了時間</p>
-            <a-time-picker :default-value="moment('13:00', 'HH:mm')" format="HH:mm" @change="endTimeChange" />
+            <a-time-picker :default-value="moment(endTime, 'HH:mm')" format="HH:mm" @change="endTimeChange" />
           </div>
         </div>
         <div>
@@ -51,7 +51,7 @@ import moment from 'moment';
 export default {
   data() {
     return {
-      title: 'インターン生のみランチ会',
+      title: '',
       details: '',
       link: '',
       date: '',
@@ -64,6 +64,21 @@ export default {
     generateCalendarUrl() {
       return this.generateUrl()
     }
+  },
+  mounted() {
+    const urlParam = location.search.substring(1);
+    if (!urlParam) return;
+
+    const params = urlParam.split('&');
+    const paramArray = [];
+    for (let i = 0; i < params.length; i++) {
+      const paramItem = params[i].split('=');
+      paramArray[paramItem[0]] = paramItem[1];
+    }
+
+    this.title = paramArray.title ? decodeURIComponent(paramArray.title) : ''
+    this.details = paramArray.details ? decodeURIComponent(paramArray.details) : ''
+    this.link = paramArray.link ? decodeURIComponent(paramArray.link) : ''
   },
   methods: {
     moment,
