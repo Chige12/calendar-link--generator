@@ -37,6 +37,7 @@
         <div>
           <p class="mb-2">生成URL</p>
           <a-textarea id="genUrl" type="text" :value="generateCalendarUrl" class="mb-2" :rows="3"/>
+          <a-button type="primary" @click="copyUrl">URLをコピー</a-button>
         </div>
       </div>
       <div class="flex justify-center pt-4 space-x-1">
@@ -111,6 +112,26 @@ export default {
     },
     zerofill(num) {
     	return ('0'+num).slice(-2);
+    },
+    copyUrl() {
+      if (!this.isAbleGenUrl()) {
+        this.$message.info('URLの生成に必要な項目が入力されていません。');
+        return;
+      };
+
+      navigator.clipboard.writeText(this.genUrl)
+      .then(() => {
+        this.success()
+      })
+      .catch(()=> {
+        this.error()
+      })
+    },
+    success() {
+      this.$message.success('URLをコピーしました！');
+    },
+    error() {
+      this.$message.error('コピーに失敗しました…');
     },
   }
 };
