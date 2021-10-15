@@ -34,6 +34,10 @@
             <a-time-picker :default-value="moment('13:00', 'HH:mm')" format="HH:mm" @change="endTimeChange" />
           </div>
         </div>
+        <div>
+          <p class="mb-2">生成URL</p>
+          <a-textarea id="genUrl" type="text" :value="generateCalendarUrl" class="mb-2" :rows="3"/>
+        </div>
       </div>
       <div class="flex justify-center pt-4 space-x-1">
         <span>Created by</span><a href="https://twitter.com/Chige12_">Chige12</a>
@@ -52,6 +56,12 @@ export default {
       date: '',
       startTime: '12:00',
       endTime: '13:00',
+      genUrl: ''
+    }
+  },
+  computed: {
+    generateCalendarUrl() {
+      return this.generateUrl()
     }
   },
   methods: {
@@ -64,6 +74,43 @@ export default {
     },
     endTimeChange(_, endTime) {
       this.endTime = endTime
+    },
+    isAbleGenUrl() {
+      return this.date && this.title && this.startTime && this.endTime
+    },
+    generateUrl() {
+      if (!this.isAbleGenUrl()) return '';
+
+      const startDateStr = `${this.date}T${this.startTime}:00+09:00`
+      const endTimeStr = `${this.date}T${this.endTime}:00+09:00`
+      const link = this.link ? `Meeting link: ${this.link}` : ''
+      const details = `${this.details}\n${link}`
+      const location = ''
+
+      const genUrl = 'http://www.google.com/calendar/event?' +
+        'action='   + 'TEMPLATE' +
+        '&text='    + encodeURIComponent(this.title) +
+        '&details=' + encodeURIComponent(details) +
+        '&location='+ encodeURIComponent(location) +
+        '&dates='   + this.getUTC(startDateStr) + '/' + this.getUTC(endTimeStr) +
+        '&trp='     + 'false'
+
+      this.genUrl = genUrl
+      return genUrl
+    },
+    getUTC(dateStr) {
+    	const date = new Date(dateStr);
+    	return date.getUTCFullYear() +
+    		this.zerofill(date.getUTCMonth()+1) +
+    		this.zerofill(date.getUTCDate()) +
+    		'T' +
+    		this.zerofill(date.getUTCHours()) +
+    		this.zerofill(date.getUTCMinutes()) +
+    		this.zerofill(date.getUTCSeconds()) +
+    		'Z';
+    },
+    zerofill(num) {
+    	return ('0'+num).slice(-2);
     },
   }
 };
