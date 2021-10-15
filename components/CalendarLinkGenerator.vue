@@ -7,6 +7,7 @@
         <h2 class="text-xl leading-7 font-semibold">
           Google Calendar - Link Generator
         </h2>
+        <p class="mb-2">Googleカレンダーの予定作成リンクを生成するジェネレーターです。</p>
         <a-divider />
         <div class="mb-6">
           <p class="mb-2">予定のタイトル</p>
