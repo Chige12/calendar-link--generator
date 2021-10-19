@@ -15,7 +15,7 @@
         </div>
         <div class="mb-6">
           <p class="mb-2">予定の説明</p>
-          <a-textarea v-model="details" placeholder="予定の説明" class="mb-1" :rows="2"/>
+          <a-textarea v-model="details" placeholder="予定の説明" class="mb-1" :rows="3"/>
           <a-input v-model="link" placeholder="会議のリンク">
             <a-icon slot="prefix" type="link" />
           </a-input>
